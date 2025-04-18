@@ -1,0 +1,66 @@
+* {
+  font-family: "Raleway", sans-serif;
+}
+/* Fonts */
+.heading-font {
+  font-family: "Raleway", sans-serif;
+}
+
+.body-font {
+  font-family: "Open Sans", sans-serif;
+}
+
+/* Colors */
+.bg-tk-background {
+  background-color: #131921;
+}
+
+.text-brand-primary {
+  color: #81c408;
+}
+
+.text-brand-secondary {
+  color: #ffb524;
+}
+
+.text-brand-text_primary {
+  color: #747d88;
+}
+
+.text-brand-heading_primary {
+  color: #45595b;
+}
+
+.bg-brand-primary {
+  background-color: #81c408;
+}
+
+.bg-brand-secondary {
+  background-color: #ffb524;
+}
+
+.border-brand-primary {
+  border: 1px solid #81c408;
+}
+
+.border-brand-secondary {
+  border: 1px solid #ffb524;
+}
+.text-bottom-brand-primary {
+  color: 1px solid #81c408;
+}
+.border-bottom-brand-secondary {
+  border-bottom: 1px solid #ffb524;
+}
+
+.text-bottom-brand-secondary {
+  color: 1px solid #ffb524;
+}
+
+.hover\:text-brand-heading_primary:hover {
+  background-color: #45595b;
+}
+
+.hover\:bg-brand-secondary:hover {
+  background-color: #ffb524;
+}

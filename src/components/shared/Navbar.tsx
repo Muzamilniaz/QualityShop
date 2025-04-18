@@ -1,0 +1,81 @@
+"use client";
+import React, { useState } from "react";
+import { FaUserCircle, FaSearch, FaBars } from "react-icons/fa";
+import Link from "next/link";
+const categories = [
+  "Electronics",
+  "Fashion",
+  "Home & Garden",
+  "Beauty",
+  "Toys",
+  "Sports",
+  "Automotive",
+  "Books",
+  "Grocery",
+  "Health",
+];
+
+const Navbar: React.FC = () => {
+  const [bottomCollapse, setBottomCollapse] = useState(false);
+
+  return (
+    <nav className="w-full bg-white shadow-md sticky top-0 z-50">
+      {/* Top Navbar */}
+      <div className="flex items-center justify-between px-4 py-4 md:px-10 flex-wrap gap-y-2">
+        {/* Logo + Hamburger (Mobile Only) */}
+        <div className="flex items-center gap-4">
+          {/* Hamburger Icon (Mobile) */}
+          <button
+            className="md:hidden text-gray-700"
+            onClick={() => setBottomCollapse((prev) => !prev)}
+          >
+            <FaBars size={20} />
+          </button>
+
+          {/* Logo */}
+          <Link href="/" className="text-2xl font-bold text-blue-600">
+            QualityShop
+          </Link>
+        </div>
+
+        {/* Search Bar */}
+        <div className="flex-grow mx-4 max-w-xl hidden md:flex items-center border border-gray-200 rounded-full shadow-lg overflow-hidden bg-white transition-all duration-300 hover:shadow-xl">
+          <input
+            type="text"
+            placeholder="Search for products, brands, and more..."
+            className="flex-grow px-5 py-3 text-sm text-gray-700 placeholder-gray-400 focus:outline-none bg-transparent transition-colors duration-200"
+          />
+          <button className="bg-gradient-to-r from-blue-500 to-indigo-600 px-5 py-3 text-white hover:from-blue-600 hover:to-indigo-700 flex items-center gap-2 text-sm font-semibold rounded-r-full transition-all duration-300">
+            <FaSearch size={16} className="opacity-80" />
+            Search
+          </button>
+        </div>
+
+        {/* Profile Icon */}
+        <div className="text-gray-600 hover:text-blue-600 cursor-pointer">
+          <FaUserCircle size={26} />
+        </div>
+      </div>
+
+      {/* Bottom Navbar: Responsive Collapsible Categories */}
+      <div
+        className={`bg-gray-100 px-4 md:px-10 overflow-hidden transition-all duration-300 ${
+          bottomCollapse ? "max-h-[220px] py-3" : "max-h-0"
+        } md:max-h-none md:py-2`}
+      >
+        <div className="flex flex-wrap gap-4 md:gap-6 text-sm md:text-base whitespace-nowrap overflow-x-auto scrollbar-hide">
+          {categories.map((cat) => (
+            <span
+              key={cat}
+              className="cursor-pointer hover:text-blue-600 text-gray-700 font-medium"
+            >
+              {cat}
+            </span>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
