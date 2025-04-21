@@ -205,7 +205,7 @@ const ProductTabs: React.FC<{
                 <Image
                   width={100}
                   height={100}
-                  src="img/avatar.jpg"
+                  src="/img/avatar.jpg"
                   alt="User avatar"
                   className="w-full h-full object-cover rounded-full"
                 />
