@@ -1,5 +1,4 @@
 "use client";
-
 import {
   faMinus,
   faPlus,
@@ -10,9 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import "./page.css"; // Import your CSS file here
 import RelatedProducts from "@/components/relatedproducts/RelatedProducts";
-
 import mainImg from "../../images/product-img-12.jpg";
-
+import Image from "next/image";
 interface Product {
   id: number;
   name: string;
@@ -21,7 +19,6 @@ interface Product {
   category: string;
   description: string;
 }
-
 interface Review {
   id: number;
   author: string;
@@ -29,22 +26,21 @@ interface Review {
   rating: number;
   comment: string;
 }
-
-interface Category {
-  name: string;
-  count: number;
-}
-
 const ProductImage: React.FC<{ src: string; alt: string }> = ({ src, alt }) => (
   <div className=" w-full h-full ">
     <div className="border border-amber-100 rounded-lg overflow-hidden">
       <a href="#sample">
-        <img src={src} className="w-full rounded-lg" alt={alt} />
+        <Image
+          height={100}
+          width={100}
+          src={src}
+          className="w-full rounded-lg"
+          alt={alt}
+        />
       </a>
     </div>
   </div>
 );
-
 const ProductDetails: React.FC<{
   product: Product;
   quantity: number;
@@ -96,7 +92,6 @@ const ProductDetails: React.FC<{
         onClick={onIncrement}
       >
         <FontAwesomeIcon icon={faPlus} className="font-bold" />
-
         <i className="fa fa-plus"></i>
       </button>
     </div>
@@ -109,7 +104,6 @@ const ProductDetails: React.FC<{
     </button>
   </div>
 );
-
 const ProductTabs: React.FC<{
   product: Product;
   reviews: Review[];
@@ -208,24 +202,23 @@ const ProductTabs: React.FC<{
             <div key={review.id} className="flex items-start gap-4 mb-4">
               {/* Avatar */}
               <div className="w-15 h-15 flex-shrink-0">
-                <img
+                <Image
+                  width={100}
+                  height={100}
                   src="img/avatar.jpg"
                   alt="User avatar"
                   className="w-full h-full object-cover rounded-full"
                 />
               </div>
-
               {/* Review Content */}
               <div className="flex-1">
                 <p className="mb-2 text-sm text-brand-text_primary font-body">
                   {review.date}
                 </p>
-
                 <div className="flex justify-between items-center">
                   <h5 className="text-lg font-semibold text-brand-heading_primary">
                     {review.author}
                   </h5>
-
                   <div className="flex mb-3">
                     {[...Array(5)].map((_, i) => (
                       <FontAwesomeIcon
@@ -240,7 +233,6 @@ const ProductTabs: React.FC<{
                     ))}
                   </div>
                 </div>
-
                 <p className="text-brand-text_primary font-body mb-2">
                   {review.comment}
                 </p>
@@ -253,43 +245,7 @@ const ProductTabs: React.FC<{
   </div>
 );
 
-const RelatedProduct: React.FC<{ product: Product }> = ({ product }) => (
-  <div className="  rounded-lg relative h-full transition duration-500 hover:shadow-2xl">
-    <div className="overflow-hidden rounded-t-lg">
-      <img
-        src={product.image}
-        className="w-full transition duration-500 hover:scale-110"
-        alt={product.name}
-      />
-    </div>
-    <div className="absolute top-2 right-2 bg-brand-primary text-white px-3 py-1 rounded-lg">
-      {product.category}
-    </div>
-    <div className="p-4 rounded-b-lg">
-      <h4 className="text-lg font-semibold mb-1">{product.name}</h4>
-      <p className="text-brand-text_primary mb-4 font-body">
-        {product.description}
-      </p>
-      <div className="flex justify-between flex-wrap">
-        <p className="text-brand-text_primary text-lg font-bold font-body">
-          {product.price}
-        </p>
-        <a
-          href="#sample"
-          className="btn border border-brand-secondary rounded-full px-3 py-1 mb-4 text-brand-primary hover:bg-brand-secondary hover:text-white transition duration-500"
-        >
-          <FontAwesomeIcon
-            icon={faShoppingBag}
-            className="mr-2 text-green-600 "
-          />
-          <span>Add to cart</span>
-        </a>
-      </div>
-    </div>
-  </div>
-);
-
-const page: React.FC = () => {
+const Page: React.FC = () => {
   const [quantity, setQuantity] = useState<number>(1);
   const [activeTab, setActiveTab] = useState<string>("description");
   const product: Product = {
@@ -301,7 +257,6 @@ const page: React.FC = () => {
     description:
       "The generated Lorem Ipsum is therefore always free from repetition injected humour, or non-characteristic words etc.",
   };
-
   const reviews: Review[] = [
     {
       id: 1,
@@ -320,13 +275,11 @@ const page: React.FC = () => {
         "The generated Lorem Ipsum is therefore always free from repetition injected humour, or non-characteristic words etc. Suspendisse ultricies nisi vel quam suscipit",
     },
   ];
-
   const handleIncrement = () => setQuantity((prev) => prev + 1);
   const handleDecrement = () =>
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
   const handleAddToCart = () =>
     alert(`${quantity} ${product.name} added to cart!`);
-
   return (
     <div className="container mx-auto py-5 p-9   bg-white">
       <div className="grid grid-cols-1 lg:grid-cols-1 gap-4 mb-5">
@@ -357,5 +310,4 @@ const page: React.FC = () => {
     </div>
   );
 };
-
-export default page;
+export default Page;

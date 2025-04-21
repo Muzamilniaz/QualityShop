@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 interface ProductProps {
   image: string;
   title: string;
@@ -18,7 +19,13 @@ const ProductCard: React.FC<ProductProps> = ({
       href="productdetail"
       className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
     >
-      <img src={image} alt={title} className="w-full h-48 object-cover" />
+      <Image
+        height={192}
+        width={100}
+        src={image}
+        alt={title}
+        className="w-full h-48 object-cover"
+      />
       <div className="p-4 space-y-1">
         <p className="text-sm text-gray-500 uppercase font-medium">
           {category}

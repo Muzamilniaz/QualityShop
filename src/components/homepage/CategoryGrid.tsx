@@ -29,7 +29,7 @@ const CategoryGrid: React.FC = () => {
         href="/products"
         className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-5"
       >
-        {categories.map((item, index) => (
+        {categories.map((item) => (
           <CategoryCard key={item.id} title={item.title} icon={item.icon} />
         ))}
       </Link>

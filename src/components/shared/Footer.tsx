@@ -6,6 +6,7 @@ import american from "../../images/american-express.svg";
 import mastercard from "../../images/mastercard.svg";
 import paypal from "../../images/paypal.svg";
 import visa from "../../images/visa.svg";
+import Image from "next/image";
 
 const Footer: React.FC = () => {
   const year: number = new Date().getFullYear();
@@ -30,9 +31,9 @@ const Footer: React.FC = () => {
                 <h4 className="font-semibold mb-2">Payment Partners</h4>
                 <div className="flex items-center gap-2 flex-wrap">
                   {[amazonpay, american, mastercard, paypal, visa].map(
-                    (img, idx) => (
+                    (img) => (
                       <Link href="#" key={img.src}>
-                        <img src={img} alt="payment" className="h-8" />
+                        <Image src={img} alt="payment" className="h-8" />
                       </Link>
                     )
                   )}
@@ -52,7 +53,7 @@ const Footer: React.FC = () => {
                   "Breakfast & Instant Food",
                   "Bakery & Biscuits",
                   "Chicken, Meat & Fish",
-                ].map((item, idx) => (
+                ].map((item) => (
                   <li key={item}>
                     <Link
                       href="#"
