@@ -33,7 +33,11 @@ const Footer: React.FC = () => {
                   {[amazonpay, american, mastercard, paypal, visa].map(
                     (img) => (
                       <Link href="#" key={img.src}>
-                        <Image src={img} alt="payment" className="h-8" />
+                        <Image
+                          src={img}
+                          alt="payment"
+                          className=" h-auto w-auto"
+                        />
                       </Link>
                     )
                   )}

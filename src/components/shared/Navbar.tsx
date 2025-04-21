@@ -22,7 +22,6 @@ const Navbar: React.FC = () => {
     <nav className="w-full bg-white shadow-md sticky top-0 z-50">
       {/* Top Navbar */}
       <div className="flex items-center justify-between px-4 py-4 md:px-10 flex-wrap gap-y-2">
-        {/* Logo + Hamburger (Mobile Only) */}
         <div className="flex items-center gap-4">
           {/* Hamburger Icon (Mobile) */}
           <button
@@ -65,12 +64,13 @@ const Navbar: React.FC = () => {
       >
         <div className="flex flex-wrap gap-4 md:gap-6 text-sm md:text-base whitespace-nowrap overflow-x-auto scrollbar-hide">
           {categories.map((cat) => (
-            <span
+            <Link
+              href="/products"
               key={cat}
               className="cursor-pointer hover:text-blue-600 text-gray-700 font-medium"
             >
               {cat}
-            </span>
+            </Link>
           ))}
         </div>
       </div>

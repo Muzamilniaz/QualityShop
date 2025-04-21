@@ -381,7 +381,7 @@ const ShopCategories: React.FC = () => {
                   <Image
                     src="/images/assortment-citrus-fruits.png"
                     alt="Fresh Fruits"
-                    width={300}
+                    width={200}
                     height={200}
                     className="rounded-lg w-full"
                   />
@@ -423,58 +423,60 @@ const ShopCategories: React.FC = () => {
                   <p className="text-gray-700">
                     <span className="font-semibold">24</span> Products found
                   </p>
-                  <div className="flex items-center gap-4 mt-4 md:mt-0">
-                    <Link
-                      href="/shop/list"
-                      className="text-gray-600 hover:text-blue-600"
-                    >
-                      <svg
-                        className="h-6 w-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                  <div className=" sm:flex sm:flex:row items-center gap-4 mt-4 md:mt-0">
+                    <div className="flex items-center gap-2">
+                      <Link
+                        href="/shop/list"
+                        className="text-gray-600 hover:text-blue-600"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M4 6h16M4 12h16m-7 6h7"
-                        />
-                      </svg>
-                    </Link>
-                    <Link href="/shop/grid" className="text-blue-600">
-                      <svg
-                        className="h-6 w-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                        <svg
+                          className="h-6 w-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M4 6h16M4 12h16m-7 6h7"
+                          />
+                        </svg>
+                      </Link>
+                      <Link href="/shop/grid" className="text-blue-600">
+                        <svg
+                          className="h-6 w-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M4 6h4v4H4V6zm0 6h4v4H4v-4zm6-6h4v4h-4V6zm0 6h4v4h-4v-4zm6-6h4v4h-4V6zm0 6h4v4h-4v-4z"
+                          />
+                        </svg>
+                      </Link>
+                      <Link
+                        href="/shop"
+                        className="text-gray-600 hover:text-blue-600"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M4 6h4v4H4V6zm0 6h4v4H4v-4zm6-6h4v4h-4V6zm0 6h4v4h-4v-4zm6-6h4v4h-4V6zm0 6h4v4h-4v-4z"
-                        />
-                      </svg>
-                    </Link>
-                    <Link
-                      href="/shop"
-                      className="text-gray-600 hover:text-blue-600"
-                    >
-                      <svg
-                        className="h-6 w-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M4 4h6v6H4V4zm0 8h6v6H4v-6zm8-8h6v6h-6V4zm0 8h6v6h-6v-6z"
-                        />
-                      </svg>
-                    </Link>
+                        <svg
+                          className="h-6 w-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M4 4h6v6H4V4zm0 8h6v6H4v-6zm8-8h6v6h-6V4zm0 8h6v6h-6v-6z"
+                          />
+                        </svg>
+                      </Link>
+                    </div>
                     <select className="border rounded-lg px-3 py-2">
                       <option>Show: 50</option>
                       <option>10</option>
@@ -506,13 +508,15 @@ const ShopCategories: React.FC = () => {
                           </span>
                         )}
                         <Link href="productdetail">
-                          <Image
-                            src={product.image}
-                            alt={product.name}
-                            width={300}
-                            height={200}
-                            className="w-full h-48 object-cover"
-                          />
+                          <div className="flex justify-center">
+                            <Image
+                              src={product.image}
+                              alt={product.name}
+                              height={192}
+                              width={100}
+                              className=" h-auto w-auto object-cover"
+                            />
+                          </div>
                         </Link>
                         <div className="absolute top-2 right-2 flex flex-col gap-2">
                           <button className="bg-white p-2 rounded-full shadow hover:bg-gray-100">

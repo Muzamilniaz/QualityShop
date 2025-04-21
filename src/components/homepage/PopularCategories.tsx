@@ -48,9 +48,9 @@ const CategoriesGrid = () => {
                 <img
                   src={cat.img.src}
                   alt={cat.label}
-                  height={97}
-                  width={100}
-                  className="rounded-full mx-auto w-24 h-24 object-cover transform transition-transform duration-300 group-hover:scale-110"
+                  height={120}
+                  width={120}
+                  className="rounded-full mx-auto  object-cover transform transition-transform duration-300 group-hover:scale-110 h-auto w-auto"
                 />
               </Link>
               <h5 className="mt-4 text-sm font-medium">

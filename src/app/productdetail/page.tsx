@@ -28,13 +28,13 @@ interface Review {
 }
 const ProductImage: React.FC<{ src: string; alt: string }> = ({ src, alt }) => (
   <div className=" w-full h-full ">
-    <div className="border border-amber-100 rounded-lg overflow-hidden">
+    <div className=" flex justify-center rounded-lg overflow-hidden">
       <a href="#sample">
         <Image
-          height={100}
-          width={100}
+          height={1800}
+          width={1200}
           src={src}
-          className="w-full rounded-lg"
+          className="w-auto h-auto rounded-lg"
           alt={alt}
         />
       </a>
