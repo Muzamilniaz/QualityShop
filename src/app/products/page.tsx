@@ -14,6 +14,7 @@ import instantFoodImg from "../../images/category-instant-food.jpg";
 import petCareImg from "../../images/category-pet-care.jpg";
 import snackMunchiesImg from "../../images/category-snack-munchies.jpg";
 import teaCoffeeDrinksImg from "../../images/category-tea-coffee-drinks.jpg";
+import Loader from "@/components/shared/Loader";
 
 // JSON data for dropdowns
 interface DropdownItem {
@@ -244,9 +245,7 @@ const ShopCategories: React.FC = () => {
   return (
     <div>
       {loaderStatus ? (
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-600"></div>
-        </div>
+        <Loader />
       ) : (
         <>
           <div className="lg:w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">

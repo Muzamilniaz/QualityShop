@@ -1,6 +1,7 @@
-import React from "react";
-import ProductCard from "../shared/ProductCard";
+"use client";
 
+import React, { useEffect, useState } from "react";
+import ProductCard from "../shared/ProductCard";
 import product1 from "../../images/category-baby-care.jpg";
 import product2 from "../../images/category-atta-rice-dal.jpg";
 import product3 from "../../images/category-bakery-biscuits.jpg";
@@ -14,82 +15,50 @@ import product10 from "../../images/category-tea-coffee-drinks.jpg";
 import product11 from "../../images/product-img-11.jpg";
 import product12 from "../../images/product-img-12.jpg";
 
-const products = [
-  {
-    image: product1.src,
-    title: "Baby Care",
-    price: "$7.99",
-    category: "Essentials",
-  },
-  {
-    image: product2.src,
-    title: "Atta, Rice & Dal",
-    price: "$11.49",
-    category: "Groceries",
-  },
-  {
-    image: product3.src,
-    title: "Bakery & Biscuits",
-    price: "$6.25",
-    category: "Bakery",
-  },
-  {
-    image: product4.src,
-    title: "Chicken, Meat & Fish",
-    price: "$14.99",
-    category: "Non-Veg",
-  },
-  {
-    image: product5.src,
-    title: "Cleaning Essentials",
-    price: "$9.75",
-    category: "Household",
-  },
-  {
-    image: product6.src,
-    title: "Dairy, Bread & Eggs",
-    price: "$8.50",
-    category: "Dairy",
-  },
-  {
-    image: product7.src,
-    title: "Instant Food",
-    price: "$5.99",
-    category: "Snacks",
-  },
-  {
-    image: product8.src,
-    title: "Pet Care",
-    price: "$13.00",
-    category: "Pets",
-  },
-  {
-    image: product9.src,
-    title: "Snack & Munchies",
-    price: "$4.95",
-    category: "Snacks",
-  },
-  {
-    image: product10.src,
-    title: "Tea, Coffee & Drinks",
-    price: "$6.99",
-    category: "Beverages",
-  },
-  {
-    image: product11.src,
-    title: "Premium Atta Pack",
-    price: "$10.99",
-    category: "Groceries",
-  },
-  {
-    image: product12.src,
-    title: "Biscuits Variety Pack",
-    price: "$7.25",
-    category: "Bakery",
-  },
-];
+interface Product {
+  image: string;
+  title: string;
+  price: string;
+  category: string;
+}
+
+// Map API image paths to imported images
+const productImages: { [key: string]: string } = {
+  "/images/category-baby-care.jpg": product1.src,
+  "/images/category-atta-rice-dal.jpg": product2.src,
+  "/images/category-bakery-biscuits.jpg": product3.src,
+  "/images/category-chicken-meat-fish.jpg": product4.src,
+  "/images/category-cleaning-essentials.jpg": product5.src,
+  "/images/category-dairy-bread-eggs.jpg": product6.src,
+  "/images/category-instant-food.jpg": product7.src,
+  "/images/category-pet-care.jpg": product8.src,
+  "/images/category-snack-munchies.jpg": product9.src,
+  "/images/category-tea-coffee-drinks.jpg": product10.src,
+  "/images/product-img-11.jpg": product11.src,
+  "/images/product-img-12.jpg": product12.src,
+};
 
 const ProductsGrid: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    fetch("/api/featuredProducts")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Fetched products:", data);
+        // Map API image paths to imported image sources
+        setProducts(
+          data.data.map((product: Product) => ({
+            ...product,
+            image: productImages[product.image] ?? product.image,
+          }))
+        );
+      })
+      .catch((err) => {
+        console.error("Failed to fetch products:", err);
+      });
+  }, []);
+
   return (
     <div className="px-4 py-10 md:px-10 bg-gray-50">
       <h2 className="text-2xl py-3 font-bold text-gray-800 mb-6 text-center">

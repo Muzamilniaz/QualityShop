@@ -1,30 +1,33 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 
-const bannerSlides = [
-  {
-    id: 1,
-    src: "https://images.unsplash.com/photo-1546069901-eacef0df6022?auto=format&fit=crop&w=1200&q=80",
-    title: "SuperMarket Daily Fresh Grocery",
-    subtitle: "Opening Sale Discount 50%",
-    description:
-      "Introduced a new model for online grocery shopping and convenient home delivery.",
-  },
-  {
-    id: 2,
-    src: "https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=1200&q=80",
-    title: "Free Shipping on Orders Over $100",
-    subtitle: "Free Shipping - orders over $100",
-    description:
-      "Free Shipping to First-Time Customers Only, After promotions and discounts are applied.",
-  },
-];
+interface BannerSlide {
+  id: number;
+  src: string;
+  title: string;
+  subtitle: string;
+  description: string;
+}
 
 const BannerSlider: React.FC = () => {
+  const [bannerSlides, setBannerSlides] = useState<BannerSlide[]>([]);
+
+  useEffect(() => {
+    fetch("/api/bannerSlider")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Fetched banners:", data);
+        setBannerSlides(data.data);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch banners:", err);
+      });
+  }, []);
+
   return (
     <section className=" mx-auto overflow-hidden rounded-xl container mt-8 px-4 ">
       <Swiper

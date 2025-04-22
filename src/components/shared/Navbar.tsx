@@ -1,22 +1,28 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaUserCircle, FaSearch, FaBars } from "react-icons/fa";
 import Link from "next/link";
-const categories = [
-  "Electronics",
-  "Fashion",
-  "Home & Garden",
-  "Beauty",
-  "Toys",
-  "Sports",
-  "Automotive",
-  "Books",
-  "Grocery",
-  "Health",
-];
+interface Navbar {
+  id: number;
+  img: string;
+  label: string;
+}
 
 const Navbar: React.FC = () => {
   const [bottomCollapse, setBottomCollapse] = useState(false);
+  const [navbar, setNavbar] = useState<Navbar[]>([]);
+
+  useEffect(() => {
+    fetch("/api/navbar")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Fetched navbar:", data);
+        setNavbar(data.data);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch categories:", err);
+      });
+  }, []);
 
   return (
     <nav className="w-full bg-white shadow-md sticky top-0 z-50">
@@ -63,13 +69,13 @@ const Navbar: React.FC = () => {
         } md:max-h-none md:py-2`}
       >
         <div className="flex flex-wrap gap-4 md:gap-6 text-sm md:text-base whitespace-nowrap overflow-x-auto scrollbar-hide">
-          {categories.map((cat) => (
+          {navbar.map((cat) => (
             <Link
               href="/products"
-              key={cat}
+              key={cat.id}
               className="cursor-pointer hover:text-blue-600 text-gray-700 font-medium"
             >
-              {cat}
+              {cat.label}
             </Link>
           ))}
         </div>
