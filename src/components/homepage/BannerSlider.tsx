@@ -12,11 +12,8 @@ interface BannerSlide {
   subtitle: string;
   description: string;
 }
-interface BannerSliderProps {
-  setShowLoader: (show: boolean) => void;
-}
 
-const BannerSlider: React.FC<BannerSliderProps> = ({ setShowLoader }) => {
+const BannerSlider: React.FC = () => {
   const [bannerSlides, setBannerSlides] = useState<BannerSlide[]>([]);
 
   useEffect(() => {
@@ -25,7 +22,6 @@ const BannerSlider: React.FC<BannerSliderProps> = ({ setShowLoader }) => {
       .then((data) => {
         console.log("Fetched banners:", data);
         setBannerSlides(data.data);
-        setShowLoader(false);
       })
       .catch((err) => {
         console.error("Failed to fetch banners:", err);

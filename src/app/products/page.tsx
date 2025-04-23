@@ -14,8 +14,9 @@ import instantFoodImg from "../../images/category-instant-food.jpg";
 import petCareImg from "../../images/category-pet-care.jpg";
 import snackMunchiesImg from "../../images/category-snack-munchies.jpg";
 import teaCoffeeDrinksImg from "../../images/category-tea-coffee-drinks.jpg";
-import Loader from "@/components/shared/Loader";
 
+import Loader from "@/components/shared/Loader";
+import FreshFruit from "../../images/assortment-citrus-fruits.png";
 // JSON data for dropdowns
 interface DropdownItem {
   title: string;
@@ -378,7 +379,7 @@ const ShopCategories: React.FC = () => {
 
                 <div className="py-6 relative">
                   <Image
-                    src="/images/assortment-citrus-fruits.png"
+                    src={FreshFruit.src}
                     alt="Fresh Fruits"
                     width={200}
                     height={200}

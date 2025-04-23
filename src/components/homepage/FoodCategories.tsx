@@ -28,10 +28,8 @@ const iconMap: { [key: string]: IconType } = {
   FaAppleAlt,
   FaHamburger,
 };
-interface CategoryCardProps {
-  setShowLoader: (show: boolean) => void;
-}
-const FoodCategories: React.FC<CategoryCardProps> = ({ setShowLoader }) => {
+
+const FoodCategories: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -40,7 +38,6 @@ const FoodCategories: React.FC<CategoryCardProps> = ({ setShowLoader }) => {
       .then((data) => {
         console.log("Fetched categories:", data);
         setCategories(data.data);
-        setShowLoader(false);
       })
       .catch((err) => {
         console.error("Failed to fetch categories:", err);

@@ -36,11 +36,8 @@ const categoryImages: { [key: string]: string | StaticImageData } = {
   "/images/pet-care.png": petCare,
   "/images/atta-rice-dal.png": attaRiceDal,
 };
-interface CategoriesGridProps {
-  setShowLoader: (show: boolean) => void;
-}
 
-const CategoriesGrid: React.FC<CategoriesGridProps> = ({ setShowLoader }) => {
+const CategoriesGrid: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -49,7 +46,6 @@ const CategoriesGrid: React.FC<CategoriesGridProps> = ({ setShowLoader }) => {
       .then((data) => {
         console.log("Fetched categories:", data);
         setCategories(data.data);
-        setShowLoader(false);
       })
       .catch((err) => {
         console.error("Failed to fetch categories:", err);
