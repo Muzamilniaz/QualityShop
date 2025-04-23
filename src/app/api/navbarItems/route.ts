@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 
-const navbar = [
+const navbarItems = [
     { id: 1, img: '/images/dairy-bread-eggs.png', label: 'Electronics' },
     { id: 2, img: '/images/fruits-vegetables.png', label: 'Fashion' },
     { id: 3, img: '/images/snack-munchies.png', label: 'Home & Garden' },
@@ -14,8 +14,6 @@ const navbar = [
     { id: 10, img: '/images/cleaning-essentials.png', label: 'Health' },
   ];
   
-  export default navbar;
-
 export async function GET() {
-  return NextResponse.json({ data: navbar }, { status: 200 });
+  return NextResponse.json({ data: navbarItems }, { status: 200 });
 }

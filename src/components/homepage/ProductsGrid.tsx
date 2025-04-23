@@ -38,7 +38,11 @@ const productImages: { [key: string]: string } = {
   "/images/product-img-12.jpg": product12.src,
 };
 
-const ProductsGrid: React.FC = () => {
+interface ProductsGridProps {
+  setShowLoader: (show: boolean) => void;
+}
+
+const ProductsGrid: React.FC<ProductsGridProps> = ({ setShowLoader }) => {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -53,6 +57,7 @@ const ProductsGrid: React.FC = () => {
             image: productImages[product.image] ?? product.image,
           }))
         );
+        setShowLoader(false);
       })
       .catch((err) => {
         console.error("Failed to fetch products:", err);

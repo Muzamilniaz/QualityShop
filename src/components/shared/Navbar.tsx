@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
   const [navbar, setNavbar] = useState<Navbar[]>([]);
 
   useEffect(() => {
-    fetch("/api/navbar")
+    fetch("/api/navbarItems")
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched navbar:", data);
