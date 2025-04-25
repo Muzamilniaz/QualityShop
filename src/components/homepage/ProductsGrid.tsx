@@ -16,10 +16,18 @@ import product11 from "../../images/product-img-11.jpg";
 import product12 from "../../images/product-img-12.jpg";
 
 interface Product {
+  id: number;
   image: string;
-  title: string;
-  price: string;
+  name: string;
+  price: number;
   category: string;
+  badge?: {
+    text: string;
+    color: string;
+  };
+  rating: number;
+  reviews: number;
+  originalPrice?: number;
 }
 
 // Map API image paths to imported images
@@ -66,7 +74,7 @@ const ProductsGrid: React.FC = () => {
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-6 gap-6">
         {products.map((item) => (
-          <ProductCard key={item.title} {...item} />
+          <ProductCard key={item.id} {...item} />
         ))}
       </div>
     </div>

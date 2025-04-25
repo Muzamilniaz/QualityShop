@@ -1,78 +1,72 @@
-import { NextResponse } from 'next/server';
 
+import { NextResponse } from 'next/server';
+import attaRiceDalImg from "../../../images/category-atta-rice-dal.jpg";
+import bakeryBiscuitsImg from "../../../images/category-bakery-biscuits.jpg";
+import chickenMeatFishImg from "../../../images/category-chicken-meat-fish.jpg";
+import instantFoodImg from "../../../images/category-instant-food.jpg";
+import snackMunchiesImg from "../../../images/category-snack-munchies.jpg";
+import teaCoffeeDrinksImg from "../../../images/category-tea-coffee-drinks.jpg";
 // Products data with static image paths
-const products = [
+const products= [
   {
-    image: '/images/category-baby-care.jpg',
-    title: 'Baby Care',
-    price: '$7.99',
-    category: 'Essentials',
+    id: 2,
+    name: "NutriChoice Digestive",
+    category: "Bakery & Biscuits",
+    image: attaRiceDalImg.src,
+    price: 24,
+    rating: 4.5,
+    reviews: 25,
+    badge: { text: "14%", color: "bg-green-500" },
   },
   {
-    image: '/images/category-atta-rice-dal.jpg',
-    title: 'Atta, Rice & Dal',
-    price: '$11.49',
-    category: 'Groceries',
+    id: 3,
+    name: "Cadbury 5 Star Chocolate",
+    category: "Bakery & Biscuits",
+    image: bakeryBiscuitsImg.src,
+    price: 32,
+    originalPrice: 35,
+    rating: 5,
+    reviews: 469,
   },
   {
-    image: '/images/category-bakery-biscuits.jpg',
-    title: 'Bakery & Biscuits',
-    price: '$6.25',
-    category: 'Bakery',
+    id: 4,
+    name: "Onion Flavour Potato",
+    category: "Snack & Munchies",
+    image: chickenMeatFishImg.src,
+    price: 3,
+    originalPrice: 5,
+    rating: 3.5,
+    reviews: 456,
+    badge: { text: "Hot", color: "bg-red-500" },
   },
   {
-    image: '/images/category-chicken-meat-fish.jpg',
-    title: 'Chicken, Meat & Fish',
-    price: '$14.99',
-    category: 'Non-Veg',
+    id: 7,
+    name: "Britannia Cheese Slices",
+    category: "Dairy, Bread & Eggs",
+    image: instantFoodImg.src,
+    price: 24,
+    rating: 5,
+    reviews: 345,
   },
   {
-    image: '/images/category-cleaning-essentials.jpg',
-    title: 'Cleaning Essentials',
-    price: '$9.75',
-    category: 'Household',
+    id: 9,
+    name: "Slurrp Millet Chocolate",
+    category: "Snack & Munchies",
+    image: snackMunchiesImg.src,
+    price: 3,
+    originalPrice: 5,
+    rating: 4.5,
+    reviews: 67,
   },
   {
-    image: '/images/category-dairy-bread-eggs.jpg',
-    title: 'Dairy, Bread & Eggs',
-    price: '$8.50',
-    category: 'Dairy',
-  },
-  {
-    image: '/images/category-instant-food.jpg',
-    title: 'Instant Food',
-    price: '$5.99',
-    category: 'Snacks',
-  },
-  {
-    image: '/images/category-pet-care.jpg',
-    title: 'Pet Care',
-    price: '$13.00',
-    category: 'Pets',
-  },
-  {
-    image: '/images/category-snack-munchies.jpg',
-    title: 'Snack & Munchies',
-    price: '$4.95',
-    category: 'Snacks',
-  },
-  {
-    image: '/images/category-tea-coffee-drinks.jpg',
-    title: 'Tea, Coffee & Drinks',
-    price: '$6.99',
-    category: 'Beverages',
-  },
-  {
-    image: '/images/product-img-11.jpg',
-    title: 'Premium Atta Pack',
-    price: '$10.99',
-    category: 'Groceries',
-  },
-  {
-    image: '/images/product-img-12.jpg',
-    title: 'Biscuits Variety Pack',
-    price: '$7.25',
-    category: 'Bakery',
+    id: 10,
+    name: "Amul Butter - 500 g",
+    category: "Dairy, Bread & Eggs",
+    image: teaCoffeeDrinksImg.src,
+    price: 13,
+    originalPrice: 18,
+    rating: 3.5,
+    reviews: 89,
   },
 ];
 

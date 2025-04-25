@@ -15,6 +15,7 @@ import babyCare from "../../images/baby-care.png";
 import cleaningEssentials from "../../images/cleaning-essentials.png";
 import petCare from "../../images/pet-care.png";
 import attaRiceDal from "../../images/atta-rice-dal.png";
+import Loader from "../shared/Loader";
 
 interface Category {
   img: string;
@@ -39,6 +40,7 @@ const categoryImages: { [key: string]: string | StaticImageData } = {
 
 const CategoriesGrid: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/popularCategories")
@@ -46,11 +48,17 @@ const CategoriesGrid: React.FC = () => {
       .then((data) => {
         console.log("Fetched categories:", data);
         setCategories(data.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.error("Failed to fetch categories:", err);
+        setLoading(false);
       });
   }, []);
+
+if (loading) {
+  return <div className="text-center mt-10"><Loader/></div>;
+}
 
   return (
     <section className="my-8 lg:my-14">
