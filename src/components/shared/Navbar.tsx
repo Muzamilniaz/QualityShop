@@ -1,7 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { FaUserCircle, FaSearch, FaBars } from "react-icons/fa";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+
 interface Navbar {
   id: number;
   img: string;
@@ -11,12 +13,40 @@ interface Navbar {
 const Navbar: React.FC = () => {
   const [bottomCollapse, setBottomCollapse] = useState(false);
   const [navbar, setNavbar] = useState<Navbar[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const router = useRouter(); // Initialize the router
+  const searchParams = useSearchParams();
+
+  const handleSearch = () => {
+    // const previousParams = new URLSearchParams(searchParams.toString());
+
+    const newParams = new URLSearchParams(searchParams);
+
+    if (searchQuery.trim()) {
+      // Set search parameter and reset page number if input is not empty
+      newParams.set("search", searchQuery.trim());
+      newParams.set("pageNumber", "1");
+    } else if (searchParams.get("search")) {
+      // Remove search parameter if input is empty and search param exists
+      newParams.delete("search");
+      newParams.set("pageNumber", "1"); // Reset to page 1
+    } else {
+      // No action needed if input is empty and no search param exists
+      return;
+    }
+
+    router.push(`/products?${newParams.toString()}`);
+  };
+
+  useEffect(() => {
+    const query = searchParams.get("search") || "";
+    setSearchQuery(query);
+  }, [searchParams]);
 
   useEffect(() => {
     fetch("/api/navbarItems")
       .then((res) => res.json())
       .then((data) => {
-        console.log("Fetched navbar:", data);
         setNavbar(data.data);
       })
       .catch((err) => {
@@ -25,7 +55,7 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <nav className="w-full bg-white shadow-md sticky top-0 z-50">
+    <div className="w-full bg-white shadow-md sticky top-0 z-50">
       {/* Top Navbar */}
       <div className="flex items-center justify-between px-4 py-4 md:px-10 flex-wrap gap-y-2">
         <div className="flex items-center gap-4">
@@ -47,10 +77,15 @@ const Navbar: React.FC = () => {
         <div className="flex-grow mx-4 max-w-xl hidden md:flex items-center border border-gray-200 rounded-full shadow-lg overflow-hidden bg-white transition-all duration-300 hover:shadow-xl">
           <input
             type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search for products, brands, and more..."
             className="flex-grow px-5 py-3 text-sm text-gray-700 placeholder-gray-400 focus:outline-none bg-transparent transition-colors duration-200"
           />
-          <button className="bg-gradient-to-r from-blue-500 to-indigo-600 px-5 py-3 text-white hover:from-blue-600 hover:to-indigo-700 flex items-center gap-2 text-sm font-semibold rounded-r-full transition-all duration-300">
+          <button
+            onClick={handleSearch}
+            className="bg-gradient-to-r from-blue-500 to-indigo-600 px-5 py-3 text-white hover:from-blue-600 hover:to-indigo-700 flex items-center gap-2 text-sm font-semibold rounded-r-full transition-all duration-300"
+          >
             <FaSearch size={16} className="opacity-80" />
             Search
           </button>
@@ -80,7 +115,7 @@ const Navbar: React.FC = () => {
           ))}
         </div>
       </div>
-    </nav>
+    </div>
   );
 };
 

@@ -15,8 +15,7 @@ import CategoryCard from "../shared/CategoryCard";
 
 interface Category {
   id: number;
-  title: string;
-  icon: string;
+  image: string;
 }
 
 // Map icon names to React Icon components
@@ -30,38 +29,38 @@ const iconMap: { [key: string]: IconType } = {
 };
 
 const FoodCategories: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
-
+  const [brands, setBrands] = useState<Category[]>([]);
+  const baseUrl = "https://192.168.1.154:7047";
   useEffect(() => {
-    fetch("/api/foodCategories")
+    fetch(`${baseUrl}/api/brand`)
       .then((res) => res.json())
       .then((data) => {
-        console.log("Fetched categories:", data);
-        setCategories(data.data);
+        console.log("Fetched :", data);
+        const formattedData = data.filter(
+          (item: Category) => item.image !== null
+        );
+        console.log("Formatted brands:", formattedData);
+        setBrands(formattedData);
       })
       .catch((err) => {
-        console.error("Failed to fetch categories:", err);
+        console.error("Failed to fetch brands:", err);
       });
   }, []);
 
   return (
     <div className="px-4 py-10 md:px-10 bg-gradient-to-b from-green-50 to-white">
       <h2 className="text-2xl py-3 text-center font-bold text-gray-800 mb-6">
-        Explore Food Categories
+        Explore Brands
       </h2>
       <Link
         href="/products"
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-5"
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-5 "
       >
-        {categories.length === 0 ? (
-          <p className="text-center col-span-full">Loading categories...</p>
+        {brands.length === 0 ? (
+          <p className="text-center col-span-full">Loading brands...</p>
         ) : (
-          categories.map((item) => (
-            <CategoryCard
-              key={item.id}
-              title={item.title}
-              icon={iconMap[item.icon]}
-            />
+          brands.map((item) => (
+            <CategoryCard key={item.id} img={item.image} id={item.id} />
           ))
         )}
       </Link>

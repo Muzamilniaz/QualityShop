@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import babyCareImg from "../../../images/category-baby-care.jpg";
 import attaRiceDalImg from "../../../images/category-atta-rice-dal.jpg";
 import bakeryBiscuitsImg from "../../../images/category-bakery-biscuits.jpg";
@@ -10,7 +11,7 @@ import petCareImg from "../../../images/category-pet-care.jpg";
 import snackMunchiesImg from "../../../images/category-snack-munchies.jpg";
 import teaCoffeeDrinksImg from "../../../images/category-tea-coffee-drinks.jpg";
 
-const products = [
+const mockProducts= [
   {
     id: 1,
     name: "Haldiram's Sev Bhujia",
@@ -115,40 +116,17 @@ const products = [
   },
 ];
 
-export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-  let page = parseInt(searchParams.get("page") || "1", 10);
-  const limit = parseInt(searchParams.get("limit") || "8", 10); // Default to 8 products per page
-  const sort = searchParams.get("sort") || "featured"; // Default to featured sorting
-
-  // Apply sorting based on the selected option
-  if (sort === "featured") {
-    products.sort((a, b) => b.rating - a.rating);
-  } else if (sort === "LTH") {
-    products.sort((a, b) => a.price - b.price);
-  } else if (sort === "HTL") {
-    products.sort((a, b) => b.price - a.price);
-  } else {
-    products.sort((a, b) => b.rating - a.rating);
+export async function GET(req: Request) {
+    const { searchParams } = new URL(req.url);
+    const query = searchParams.get("query");
+  
+    if (!query) {
+      return NextResponse.json({ error: "Query parameter is required" }, { status: 400 });
+    }
+  
+    const filteredProducts = mockProducts.filter((product) =>
+      product.name.toLowerCase().includes(query.toLowerCase())
+    );
+  
+    return NextResponse.json(filteredProducts);
   }
-
-  if (page < 1) {
-    page = 1;
-  }
-  if (page > products.length / limit) {
-    page = Math.ceil(products.length / limit);
-  }
-  const startIndex = (page - 1) * limit;
-  const endIndex = startIndex + limit;
-
-  const paginatedProducts = products.slice(startIndex, endIndex);
-  const totalProducts = products.length;
-  const totalPages = Math.ceil(totalProducts / limit);
-
-  return NextResponse.json({
-    products: paginatedProducts,
-    totalProducts,
-    totalPages,
-    currentPage: page,
-  });
-}
