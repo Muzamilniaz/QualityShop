@@ -31,7 +31,7 @@ interface Product {
     rating: number;
     reviews: number;
     badge?: { text: string; color: string };
-  }
+  };
 }
 
 interface Store {
@@ -45,7 +45,9 @@ const ShopCategories: React.FC = () => {
   const [loaderStatus, setLoaderStatus] = useState<boolean>(true);
   const [searchStore, setSearchStore] = useState<string>("");
   const [selectedStores, setSelectedStores] = useState<string[]>(["eGrocery"]);
-  const [selectedRatings, setSelectedRatings] = useState<string[]>(["ratingFour"]);
+  const [selectedRatings, setSelectedRatings] = useState<string[]>([
+    "ratingFour",
+  ]);
   const [dropdownData, setDropdownData] = useState<DropdownItem[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [stores, setStores] = useState<Store[]>([]);
@@ -63,9 +65,8 @@ const ShopCategories: React.FC = () => {
   let sortByPriceDirection = searchParams.get("sortByPriceDirection") || "LTH";
   let queryFromUrl = searchParams.get("search") || "";
 
-
   const fetchProducts = useCallback(
-    async (page: number, limit: number, query: string, sort:string) => {
+    async (page: number, limit: number, query: string, sort: string) => {
       try {
         setLoaderStatus(true);
         const baseUrl = "https://192.168.1.154:7047";
@@ -99,21 +100,27 @@ const ShopCategories: React.FC = () => {
     }
     fetchProducts(currentPage, showProductLimit, searchQuery, sortByKeyword);
     router.push(`/products?${newSearchParams.toString()}`, { scroll: false });
+  }, [
+    currentPage,
+    showProductLimit,
+    searchQuery,
+    router,
+    sortByKeyword,
+    fetchProducts,
+  ]);
 
-  }, [currentPage, showProductLimit, searchQuery, router, sortByKeyword, fetchProducts]);
-
-// instead of running only once, run whenever the URL-searchParams change
-useEffect(() => {
-  
-  const pageFromUrl = parseInt(searchParams.get("pageNumber") || "1", 10);
-  const limitFromUrl = parseInt(searchParams.get("pageSize") || "4", 10);
-  const queryFromUrl = searchParams.get("search") || "";
-  const sortByPriceDirection = searchParams.get("sortByPriceDirection") || "LTH";
-  setSortByKeyword(sortByPriceDirection);
-  setCurrentPage(pageFromUrl);
-  setShowProductLimit(limitFromUrl);
-  setSearchQuery(queryFromUrl);
-}, [searchParams]);
+  // instead of running only once, run whenever the URL-searchParams change
+  useEffect(() => {
+    const pageFromUrl = parseInt(searchParams.get("pageNumber") || "1", 10);
+    const limitFromUrl = parseInt(searchParams.get("pageSize") || "4", 10);
+    const queryFromUrl = searchParams.get("search") || "";
+    const sortByPriceDirection =
+      searchParams.get("sortByPriceDirection") || "LTH";
+    setSortByKeyword(sortByPriceDirection);
+    setCurrentPage(pageFromUrl);
+    setShowProductLimit(limitFromUrl);
+    setSearchQuery(queryFromUrl);
+  }, [searchParams]);
 
   useEffect(() => {
     fetchData();
@@ -121,12 +128,18 @@ useEffect(() => {
     fetchRatings();
   }, []);
 
- 
   // Handle state changes and fetch products
   useEffect(() => {
     fetchProducts(currentPage, showProductLimit, searchQuery, sortByKeyword);
     updateUrlParams();
-  }, [currentPage, showProductLimit, searchQuery, fetchProducts, updateUrlParams, sortByKeyword]);
+  }, [
+    currentPage,
+    showProductLimit,
+    searchQuery,
+    fetchProducts,
+    updateUrlParams,
+    sortByKeyword,
+  ]);
 
   const paginationHandler = (page: number) => {
     setCurrentPage(page);
@@ -134,7 +147,9 @@ useEffect(() => {
   };
   const toggleDropdown = (index: number) => {
     setOpenDropdowns((prev) =>
-      prev.includes(index) ? prev.filter((item) => item !== index) : [...prev, index]
+      prev.includes(index)
+        ? prev.filter((item) => item !== index)
+        : [...prev, index]
     );
   };
 
@@ -146,11 +161,15 @@ useEffect(() => {
 
   const handleRatingCheckbox = (rating: string) => {
     setSelectedRatings((prev) =>
-      prev.includes(rating) ? prev.filter((r) => r !== rating) : [...prev, rating]
+      prev.includes(rating)
+        ? prev.filter((r) => r !== rating)
+        : [...prev, rating]
     );
   };
 
-  const handleShowProductsLimit = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleShowProductsLimit = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const newLimit = parseInt(event.target.value, 10);
     setShowProductLimit(newLimit);
     setCurrentPage(1); // Reset to page 1
@@ -172,7 +191,12 @@ useEffect(() => {
       const dropdown = await dropdownRes.json();
       setDropdownData(dropdown);
 
-      await fetchProducts(pageFromUrl, limitFromUrl, queryFromUrl, sortByPriceDirection);
+      await fetchProducts(
+        pageFromUrl,
+        limitFromUrl,
+        queryFromUrl,
+        sortByPriceDirection
+      );
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -182,9 +206,13 @@ useEffect(() => {
 
   const fetchStoreCheckbox = async () => {
     try {
-      const storeCheckboxData = await fetch("/api/storescheckbox", { cache: "no-store" });
+      const storeCheckboxData = await fetch("/api/storescheckbox", {
+        cache: "no-store",
+      });
       const storesRaw: string[] = await storeCheckboxData.json();
-      const stores: Store[] = storesRaw.map((storeName) => ({ name: storeName }));
+      const stores: Store[] = storesRaw.map((storeName) => ({
+        name: storeName,
+      }));
       setStores(stores);
     } catch (error) {
       console.error("Error fetching stores:", error);
@@ -200,8 +228,6 @@ useEffect(() => {
       console.error("Failed to fetch ratings", err);
     }
   };
-
-
 
   return (
     <div>
@@ -238,12 +264,21 @@ useEffect(() => {
                 </div>
                 <div className="flex flex-col md:flex-row justify-between items-center mb-4">
                   <p className="text-gray-700">
-                    <span className="font-semibold">{totalProducts}</span> Products found
+                    <span className="font-semibold">{totalProducts}</span>{" "}
+                    Products found
                   </p>
                   <div className="sm:flex sm:flex-row items-center gap-4 mt-4 md:mt-0">
                     <div className="flex items-center gap-2">
-                      <Link href="/shop/list" className="text-gray-600 hover:text-blue-600">
-                        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <Link
+                        href="/shop/list"
+                        className="text-gray-600 hover:text-blue-600"
+                      >
+                        <svg
+                          className="h-6 w-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -253,7 +288,12 @@ useEffect(() => {
                         </svg>
                       </Link>
                       <Link href="/shop/grid" className="text-blue-600">
-                        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg
+                          className="h-6 w-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -262,8 +302,16 @@ useEffect(() => {
                           />
                         </svg>
                       </Link>
-                      <Link href="/shop" className="text-gray-600 hover:text-blue-600">
-                        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <Link
+                        href="/shop"
+                        className="text-gray-600 hover:text-blue-600"
+                      >
+                        <svg
+                          className="h-6 w-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -295,14 +343,15 @@ useEffect(() => {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {products.map((product) => (
-                    <ProductCard key={product.productData.id} {...product.productData} />
+                    <ProductCard
+                      key={product.productData.id}
+                      {...product.productData}
+                    />
                   ))}
                 </div>
                 <SidebarPagination
                   totalPages={totalPages}
                   currentPage={currentPage}
-                  showProductLimit={showProductLimit}
-                  sortByKeyword={sortByKeyword}
                   paginationHandler={paginationHandler}
                 />
               </div>

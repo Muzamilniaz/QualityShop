@@ -1,32 +1,15 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import {
-  FaPizzaSlice,
-  FaCoffee,
-  FaIceCream,
-  FaFish,
-  FaAppleAlt,
-  FaHamburger,
-} from "react-icons/fa";
-import { IconType } from "react-icons";
+
 import Link from "next/link";
 import CategoryCard from "../shared/CategoryCard";
 
 interface Category {
   id: number;
   image: string;
+  title: string;
 }
-
-// Map icon names to React Icon components
-const iconMap: { [key: string]: IconType } = {
-  FaPizzaSlice,
-  FaCoffee,
-  FaIceCream,
-  FaFish,
-  FaAppleAlt,
-  FaHamburger,
-};
 
 const FoodCategories: React.FC = () => {
   const [brands, setBrands] = useState<Category[]>([]);
@@ -60,7 +43,12 @@ const FoodCategories: React.FC = () => {
           <p className="text-center col-span-full">Loading brands...</p>
         ) : (
           brands.map((item) => (
-            <CategoryCard key={item.id} img={item.image} id={item.id} />
+            <CategoryCard
+              key={item.id}
+              title={item.title}
+              img={item.image}
+              id={item.id}
+            />
           ))
         )}
       </Link>

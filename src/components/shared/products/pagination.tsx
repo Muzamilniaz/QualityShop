@@ -3,23 +3,19 @@ import React from "react";
 interface PaginationProps {
   totalPages: number;
   currentPage: number;
-  showProductLimit: number;
-  sortByKeyword: string;
   paginationHandler: (page: number) => void;
 }
 
 const SidebarPagination: React.FC<PaginationProps> = ({
   totalPages,
   currentPage,
-  showProductLimit,
-  sortByKeyword,
   paginationHandler,
 }) => {
   const getPageNumbers = () => {
     const pages = [];
     const maxPagesToShow = 5;
     let startPage = Math.max(1, currentPage - 2);
-    let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+    const endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
 
     if (endPage - startPage < maxPagesToShow - 1) {
       startPage = Math.max(1, endPage - maxPagesToShow + 1);
@@ -47,8 +43,18 @@ const SidebarPagination: React.FC<PaginationProps> = ({
               onClick={() => paginationHandler(currentPage - 1)}
               disabled={currentPage <= 1}
             >
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
             </button>
           </li>
@@ -94,14 +100,24 @@ const SidebarPagination: React.FC<PaginationProps> = ({
             <button
               onClick={() => paginationHandler(currentPage + 1)}
               className={`px-3 py-2 rounded-lg ${
-               ( currentPage === totalPages || totalPages === 0)
+                currentPage === totalPages || totalPages === 0
                   ? "bg-gray-200 text-gray-500 cursor-not-allowed"
                   : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
               disabled={currentPage === totalPages || totalPages === 0}
             >
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </button>
           </li>

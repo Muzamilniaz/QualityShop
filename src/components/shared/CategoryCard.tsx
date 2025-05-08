@@ -5,9 +5,10 @@ import React, { useState } from "react";
 interface CategoryProps {
   img: string;
   id: number;
+  title: string;
 }
 
-const CategoryCard: React.FC<CategoryProps> = ({ id, img }) => {
+const CategoryCard: React.FC<CategoryProps> = ({ id, img, title }) => {
   const router = useRouter();
 
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -26,7 +27,7 @@ const CategoryCard: React.FC<CategoryProps> = ({ id, img }) => {
       <div className="w-24 h-24 bg-gray-400 border border-gray-300 rounded-full flex items-center justify-center mb-4 overflow-hidden shadow-sm">
         <Image
           src={imageError || !imageLoaded ? placeholderImage : actualImage}
-          alt="Brand Icon"
+          alt={title || "Category Image"}
           width={80}
           height={80}
           className="object-contain"
