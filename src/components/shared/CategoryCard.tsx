@@ -1,42 +1,45 @@
 import Image from "next/image";
-import {  useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 interface CategoryProps {
-  img:string;
-  id:number;
+  img: string;
+  id: number;
 }
 
-const CategoryCard: React.FC<CategoryProps> = ({id,img }) => {
-    const router = useRouter();
-  
- const [imageLoaded, setImageLoaded] = useState(false);
+const CategoryCard: React.FC<CategoryProps> = ({ id, img }) => {
+  const router = useRouter();
+
+  const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const actualImage = `https:${img.trim()}`;  
+  const actualImage = `https:${img.trim()}`;
   const placeholderImage =
     "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png";
-    const handleClick = () => {
-      router.push("/products?brand="+id);
-    }
+  const handleClick = () => {
+    router.push("/products?brand=" + id);
+  };
   return (
-    <div className="bg-gray-500 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col items-center justify-center p-1 text-center" onClick={handleClick}>
-      <div className="text-4xl text-green-500 mb-3">
-        {/* <Icon /> */}
+    <div
+      className="bg-white rounded-2xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center p-4 text-center cursor-pointer"
+      onClick={handleClick}
+    >
+      <div className="w-24 h-24 bg-gray-100 border border-gray-300 rounded-full flex items-center justify-center mb-4 overflow-hidden shadow-sm">
         <Image
           src={imageError || !imageLoaded ? placeholderImage : actualImage}
-          alt="Food Icon"
-          width={100}
-          height={100}
-          className="h-20 w-20 object-contain"
+          alt="Brand Icon"
+          width={80}
+          height={80}
+          className="object-contain"
           onLoad={() => setImageLoaded(true)}
           onError={() => {
             setImageError(true);
             setImageLoaded(true);
           }}
-          unoptimized={true} // Add this line to prevent Next.js from optimizing the image
+          unoptimized={true}
         />
       </div>
-      {/* <h3 className="text-lg font-semibold text-gray-800">{title}</h3> */}
+      {/* Optional Title */}
+      {/* <h3 className="text-base font-medium text-gray-800">{title}</h3> */}
     </div>
   );
 };

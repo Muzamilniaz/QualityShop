@@ -50,20 +50,25 @@ const ProductCard: React.FC<ProductProps> = ({
         )}
         <Link href={`/products/${id}`}>
           <div className="flex justify-center">
-            <Image
-                src={imageError || !imageLoaded ? placeholderImage : actualImage}
-              alt={title || "Product Image"}
-              height={192}
-              width={100}
-              className=" h-auto w-auto object-cover"
-              onLoad={() => setImageLoaded(true)}
-              onError={() => {
-                setImageError(true);
-                setImageLoaded(true);
-              }}
-            />
+            <div className="w-48 h-48 bg-gray-100 rounded-md overflow-hidden flex items-center justify-center">
+              <Image
+                src={
+                  imageError || !imageLoaded ? placeholderImage : actualImage
+                }
+                alt={title || "Product Image"}
+                width={192}
+                height={192}
+                className="w-full h-full object-contain"
+                onLoad={() => setImageLoaded(true)}
+                onError={() => {
+                  setImageError(true);
+                  setImageLoaded(true);
+                }}
+              />
+            </div>
           </div>
         </Link>
+
         <div className="absolute top-2 right-2 flex flex-col gap-2">
           <button className="bg-white p-2 rounded-full shadow hover:bg-gray-100">
             <svg
