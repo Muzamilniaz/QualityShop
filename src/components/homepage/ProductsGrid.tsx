@@ -18,7 +18,8 @@ import product12 from "../../images/product-img-12.jpg";
 interface Product {
   id: number;
   image: string;
-  name: string;
+  title: string;
+  featured_image: string;
   price: number;
   category: string;
   badge?: {

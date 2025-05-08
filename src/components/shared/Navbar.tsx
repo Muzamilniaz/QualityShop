@@ -18,7 +18,6 @@ const Navbar: React.FC = () => {
   const searchParams = useSearchParams();
 
   const handleSearch = () => {
-    // const previousParams = new URLSearchParams(searchParams.toString());
 
     const newParams = new URLSearchParams(searchParams);
 

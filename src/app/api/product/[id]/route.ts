@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { NextRequest, NextResponse } from "next/server";
 import babyCareImg from "../../../../images/category-baby-care.jpg";
 import attaRiceDalImg from "../../../../images/category-atta-rice-dal.jpg";

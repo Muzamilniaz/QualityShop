@@ -9,7 +9,8 @@ import product4 from "../../images/category-chicken-meat-fish.jpg";
 interface Product {
   id: number;
   image: string;
-  name: string;
+  title: string;
+  featured_image: string;
   price: number;
   category: string;
   badge?: {

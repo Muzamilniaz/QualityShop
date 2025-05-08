@@ -56,13 +56,9 @@ const CategoriesGrid: React.FC = () => {
       });
   }, []);
 
-  if (loading) {
-    return (
-      <div className="text-center mt-10">
-        <Loader />
-      </div>
-    );
-  }
+if (loading) {
+  return <div className="text-center mt-10"><Loader/></div>;
+}
 
   return (
     <section className="my-8 lg:my-14">

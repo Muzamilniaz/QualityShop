@@ -42,10 +42,11 @@ const Page: React.FC = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`/api/product/${id}`);
+        const res = await fetch(`https://192.168.1.154:7047/api/product/${id}`);
         if (!res.ok) throw new Error("Product not found");
         const data = await res.json();
-        setProduct(data);
+        console.log("Fetched product:", data);
+        setProduct(data.productData);
       } catch (error) {
         console.error("Failed to fetch product", error);
       }

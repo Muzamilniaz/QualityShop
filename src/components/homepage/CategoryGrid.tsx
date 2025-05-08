@@ -1,26 +1,16 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { FaPizzaSlice, FaCoffee, FaIceCream, FaFish, FaAppleAlt, FaHamburger } from 'react-icons/fa';
-import { IconType } from 'react-icons';
+
 import Link from 'next/link';
 import CategoryCard from '../shared/CategoryCard';
 
 interface Category {
   id: number;
-  title: string;
-  icon: string;
+ img :string
 }
 
 // Map icon names to React Icon components
-const iconMap: { [key: string]: IconType } = {
-  FaPizzaSlice,
-  FaCoffee,
-  FaIceCream,
-  FaFish,
-  FaAppleAlt,
-  FaHamburger,
-};
 
 const CategoryGrid: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -47,7 +37,7 @@ const CategoryGrid: React.FC = () => {
           </h2>
           <Link href="/products" className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-5">
             {categories.map((item) => (
-              <CategoryCard key={item.id} title={item.title} icon={iconMap[item.icon]} />
+              <CategoryCard key={item.id} img={item.img} id={item.id} />
             ))}
           </Link>
         </div>

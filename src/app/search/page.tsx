@@ -5,7 +5,8 @@ import ProductCard from "@/components/shared/ProductCard";
 
 interface Product {
   id: number;
-  name: string;
+  title: string;
+  featured_image: string;
   category: string;
   image: string;
   price: number;
@@ -47,7 +48,7 @@ const Page: React.FC = () => {
 
   return (
     <div className="container text-center mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Search Results for "{query}"</h1>
+      <h1 className="text-2xl font-bold mb-6">Search Results for &quot;{query}&quot;</h1>
 
       {(() => {
         if (isLoading) {
@@ -62,7 +63,7 @@ const Page: React.FC = () => {
             </div>
           );
         }
-        return <p>No results found for "{query}".</p>;
+        return <p>No results found for &quot;{query}&quot;.</p>;
       })()}
     </div>
   );
