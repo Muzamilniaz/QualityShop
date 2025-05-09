@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 
-import Link from "next/link";
 import CategoryCard from "../shared/CategoryCard";
 
 interface Category {
@@ -14,13 +13,16 @@ interface Category {
 
 const FoodCategories: React.FC = () => {
   const [brands, setBrands] = useState<Category[]>([]);
-  const baseUrl = "https://192.168.1.154:7047";
+  //const baseUrl = "https://192.168.1.154:7047";
+  const baseUrl = "https://dazzling-taussig.97-74-80-158.plesk.page";
   useEffect(() => {
     fetch(`${baseUrl}/api/brand`)
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched :", data);
-        const formattedData = data.filter((item: Category)=>item.image !== null)
+        const formattedData = data.filter(
+          (item: Category) => item.image !== null
+        );
         console.log("Formatted brands:", formattedData);
         setBrands(formattedData);
       })
@@ -32,24 +34,17 @@ const FoodCategories: React.FC = () => {
   return (
     <div className="px-4 py-10 md:px-10 bg-gradient-to-b from-green-50 to-white">
       <h2 className="text-2xl py-3 text-center font-bold text-gray-800 mb-6">
-        Explore Food Brands
+        Explore Brands
       </h2>
-      <Link
-        href="/products"
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-5 "
-      >
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-5 ">
         {brands.length === 0 ? (
           <p className="text-center col-span-full">Loading brands...</p>
         ) : (
           brands.map((item) => (
-            <CategoryCard
-              key={item.id}
-              img={item.image}
-              id={item.id}
-            />
+            <CategoryCard key={item.id} img={item.image} id={item.id} />
           ))
         )}
-      </Link>
+      </div>
     </div>
   );
 };

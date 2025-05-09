@@ -4,15 +4,12 @@ import PromoSection from "@/components/homepage/PromoSection";
 import FoodCategories from "@/components/homepage/FoodCategories";
 
 export default function Home() {
-
-
   return (
     <div>
-          <BannerSlider />
-          <PopularCategories />
-          {/* <ProductsGrid /> */}
-          <PromoSection />
-          <FoodCategories />
+      <BannerSlider />
+      <FoodCategories />
+      <PromoSection />
+      <PopularCategories />
     </div>
   );
 }

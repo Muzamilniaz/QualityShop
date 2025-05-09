@@ -32,7 +32,7 @@ interface Product {
     rating: number;
     reviews: number;
     badge?: { text: string; color: string };
-  }
+  };
 }
 
 interface Store {
@@ -42,39 +42,49 @@ interface Store {
 const ShopCategories: React.FC = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  const currentPage = parseInt(searchParams.get("pageNumber") || "1", 10);
+  const showProductLimit = parseInt(searchParams.get("pageSize") || "4", 10);
+  const searchQuery = searchParams.get("search") || "";
+  const sortByKeyword = searchParams.get("sortByPriceDirection") || "featured";
+
   const [openDropdowns, setOpenDropdowns] = useState<number[]>([]);
   const [loaderStatus, setLoaderStatus] = useState<boolean>(true);
   const [searchStore, setSearchStore] = useState<string>("");
   const [selectedStores, setSelectedStores] = useState<string[]>(["eGrocery"]);
-  const [selectedRatings, setSelectedRatings] = useState<string[]>(["ratingFour"]);
+  const [selectedRatings, setSelectedRatings] = useState<string[]>([
+    "ratingFour",
+  ]);
   const [dropdownData, setDropdownData] = useState<DropdownItem[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [stores, setStores] = useState<Store[]>([]);
   const [ratingOptions, setRatingOptions] = useState<any[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalProducts, setTotalProducts] = useState<number>(0);
-  const [showProductLimit, setShowProductLimit] = useState<number>(4);
-  const [sortByKeyword, setSortByKeyword] = useState<string>("featured");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-
-  // Read query parameters from URL
-  let pageFromUrl = parseInt(searchParams.get("pageNumber") || "1", 10);
-  let limitFromUrl = parseInt(searchParams.get("pageSize") || "4", 10);
-  let sortByPriceDirection = searchParams.get("sortByPriceDirection") || "LTH";
-  let queryFromUrl = searchParams.get("search") || "";
-
 
   const fetchProducts = useCallback(
-    async (page: number, limit: number, query: string, sort:string) => {
+    async (
+      page: number,
+      limit: number,
+      query: string,
+      sort: string,
+      brand?: string
+    ) => {
       try {
         setLoaderStatus(true);
-        const baseUrl = "https://192.168.1.154:7047";
-        const apiUrl = query
-          ? `${baseUrl}/api/product/all?pageNumber=${page}&pageSize=${limit}&search=${query}&sortByPriceDirection=${sort}`
-          : `${baseUrl}/api/product/all?pageNumber=${page}&pageSize=${limit}&sortByPriceDirection=${sort}`;
-        const productListData = await fetch(apiUrl, { cache: "no-store" });
+        //const baseUrl = "https://192.168.1.154:7047";
+        const baseUrl = "https://dazzling-taussig.97-74-80-158.plesk.page";
+        let apiUrl = "";
 
+        if (brand) {
+          apiUrl = `${baseUrl}/api/product/brand/${brand}?pageNumber=${page}&pageSize=${limit}&sortByPriceDirection=${sort}`;
+        } else {
+          apiUrl = query
+            ? `${baseUrl}/api/product/all?pageNumber=${page}&pageSize=${limit}&search=${query}&sortByPriceDirection=${sort}`
+            : `${baseUrl}/api/product/all?pageNumber=${page}&pageSize=${limit}&sortByPriceDirection=${sort}`;
+        }
+
+        const productListData = await fetch(apiUrl, { cache: "no-store" });
         if (!productListData.ok) {
           throw new Error("Failed to fetch products");
         }
@@ -90,52 +100,88 @@ const ShopCategories: React.FC = () => {
     },
     []
   );
-  const updateUrlParams = useCallback(() => {
-    const newSearchParams = new URLSearchParams();
-    newSearchParams.set("pageNumber", currentPage.toString());
-    newSearchParams.set("pageSize", showProductLimit.toString());
-    newSearchParams.set("sortByPriceDirection", sortByKeyword);
-    if (searchQuery) {
-      newSearchParams.set("search", searchQuery);
-    }
-    fetchProducts(currentPage, showProductLimit, searchQuery, sortByKeyword);
-    router.push(`/products?${newSearchParams.toString()}`, { scroll: false });
 
-  }, [currentPage, showProductLimit, searchQuery, router, sortByKeyword, fetchProducts]);
+  const updateUrlParams = useCallback(
+    (newPage: number, newLimit: number, newQuery: string, newSort: string) => {
+      const newSearchParams = new URLSearchParams();
+      newSearchParams.set("pageNumber", newPage.toString());
+      newSearchParams.set("pageSize", newLimit.toString());
+      newSearchParams.set("sortByPriceDirection", newSort);
 
-// instead of running only once, run whenever the URL-searchParams change
-useEffect(() => {
-  
-  const pageFromUrl = parseInt(searchParams.get("pageNumber") || "1", 10);
-  const limitFromUrl = parseInt(searchParams.get("pageSize") || "4", 10);
-  const queryFromUrl = searchParams.get("search") || "";
-  const sortByPriceDirection = searchParams.get("sortByPriceDirection") || "LTH";
-  setSortByKeyword(sortByPriceDirection);
-  setCurrentPage(pageFromUrl);
-  setShowProductLimit(limitFromUrl);
-  setSearchQuery(queryFromUrl);
-}, [searchParams]);
+      if (newQuery) {
+        newSearchParams.set("search", newQuery);
+      } else {
+        const existingBrand = searchParams.get("brand");
+        if (existingBrand) {
+          newSearchParams.set("brand", existingBrand);
+        }
+      }
+
+      const currentParamsStr = searchParams.toString();
+      const newParamsStr = newSearchParams.toString();
+      if (currentParamsStr !== newParamsStr) {
+        router.push(`/products?${newParamsStr}`, { scroll: false });
+      }
+    },
+    [router, searchParams]
+  );
 
   useEffect(() => {
-    fetchData();
-    fetchStoreCheckbox();
-    fetchRatings();
-  }, []);
+    const fetchInitialData = async () => {
+      try {
+        setLoaderStatus(true);
 
- 
-  // Handle state changes and fetch products
-  useEffect(() => {
-    fetchProducts(currentPage, showProductLimit, searchQuery, sortByKeyword);
-    updateUrlParams();
-  }, [currentPage, showProductLimit, searchQuery, fetchProducts, updateUrlParams, sortByKeyword]);
+        const dropdownRes = await fetch("/api/dropdown", { cache: "no-store" });
+        const dropdown = await dropdownRes.json();
+        setDropdownData(dropdown);
+
+        const storeCheckboxData = await fetch("/api/storescheckbox", {
+          cache: "no-store",
+        });
+        const storesRaw: string[] = await storeCheckboxData.json();
+        const stores: Store[] = storesRaw.map((storeName) => ({
+          name: storeName,
+        }));
+        setStores(stores);
+
+        const res = await fetch("/api/ratings", { cache: "no-store" });
+        const ratings = await res.json();
+        setRatingOptions(ratings);
+
+        await fetchProducts(
+          currentPage,
+          showProductLimit,
+          searchQuery,
+          sortByKeyword,
+          searchParams.get("brand") || undefined
+        );
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+      } finally {
+        setLoaderStatus(false);
+      }
+    };
+
+    fetchInitialData();
+  }, [
+    currentPage,
+    showProductLimit,
+    searchQuery,
+    sortByKeyword,
+    searchParams,
+    fetchProducts,
+  ]);
 
   const paginationHandler = (page: number) => {
-    setCurrentPage(page);
+    updateUrlParams(page, showProductLimit, searchQuery, sortByKeyword);
     scrollToTop();
   };
+
   const toggleDropdown = (index: number) => {
     setOpenDropdowns((prev) =>
-      prev.includes(index) ? prev.filter((item) => item !== index) : [...prev, index]
+      prev.includes(index)
+        ? prev.filter((item) => item !== index)
+        : [...prev, index]
     );
   };
 
@@ -147,62 +193,27 @@ useEffect(() => {
 
   const handleRatingCheckbox = (rating: string) => {
     setSelectedRatings((prev) =>
-      prev.includes(rating) ? prev.filter((r) => r !== rating) : [...prev, rating]
+      prev.includes(rating)
+        ? prev.filter((r) => r !== rating)
+        : [...prev, rating]
     );
   };
 
-  const handleShowProductsLimit = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleShowProductsLimit = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const newLimit = parseInt(event.target.value, 10);
-    setShowProductLimit(newLimit);
-    setCurrentPage(1); // Reset to page 1
+    updateUrlParams(1, newLimit, searchQuery, sortByKeyword);
   };
 
   const handleSortProducts = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = event.target.value;
-    console.log("Selected sort value:", selectedValue);
-    setSortByKeyword(selectedValue);
-    setCurrentPage(1); // Reset to page 1
+    const newSort = event.target.value;
+    updateUrlParams(1, showProductLimit, searchQuery, newSort);
   };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-  const fetchData = async () => {
-    try {
-      const dropdownRes = await fetch("/api/dropdown", { cache: "no-store" });
-      const dropdown = await dropdownRes.json();
-      setDropdownData(dropdown);
-
-      await fetchProducts(pageFromUrl, limitFromUrl, queryFromUrl, sortByPriceDirection);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoaderStatus(false);
-    }
-  };
-
-  const fetchStoreCheckbox = async () => {
-    try {
-      const storeCheckboxData = await fetch("/api/storescheckbox", { cache: "no-store" });
-      const storesRaw: string[] = await storeCheckboxData.json();
-      const stores: Store[] = storesRaw.map((storeName) => ({ name: storeName }));
-      setStores(stores);
-    } catch (error) {
-      console.error("Error fetching stores:", error);
-    }
-  };
-
-  const fetchRatings = async () => {
-    try {
-      const res = await fetch("/api/ratings", { cache: "no-store" });
-      const ratings = await res.json();
-      setRatingOptions(ratings);
-    } catch (err) {
-      console.error("Failed to fetch ratings", err);
-    }
-  };
-
-
 
   return (
     <div>
@@ -239,12 +250,21 @@ useEffect(() => {
                 </div>
                 <div className="flex flex-col md:flex-row justify-between items-center mb-4">
                   <p className="text-gray-700">
-                    <span className="font-semibold">{totalProducts}</span> Products found
+                    <span className="font-semibold">{totalProducts}</span>{" "}
+                    Products found
                   </p>
                   <div className="sm:flex sm:flex-row items-center gap-4 mt-4 md:mt-0">
                     <div className="flex items-center gap-2">
-                      <Link href="/shop/list" className="text-gray-600 hover:text-blue-600">
-                        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <Link
+                        href="/shop/list"
+                        className="text-gray-600 hover:text-blue-600"
+                      >
+                        <svg
+                          className="h-6 w-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -254,7 +274,12 @@ useEffect(() => {
                         </svg>
                       </Link>
                       <Link href="/shop/grid" className="text-blue-600">
-                        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg
+                          className="h-6 w-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -263,8 +288,16 @@ useEffect(() => {
                           />
                         </svg>
                       </Link>
-                      <Link href="/shop" className="text-gray-600 hover:text-blue-600">
-                        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <Link
+                        href="/shop"
+                        className="text-gray-600 hover:text-blue-600"
+                      >
+                        <svg
+                          className="h-6 w-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -296,7 +329,10 @@ useEffect(() => {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {products.map((product) => (
-                    <ProductCard key={product.productData.id} {...{ ...product.productData, id: product.id }} />
+                    <ProductCard
+                      key={product.productData.id}
+                      {...{ ...product.productData, id: product.id }}
+                    />
                   ))}
                 </div>
                 <SidebarPagination

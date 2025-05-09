@@ -6,7 +6,7 @@ import Link from "next/link";
 
 interface Navbar {
   id: number;
-  img: string;
+  link: string;
   label: string;
 }
 
@@ -18,7 +18,6 @@ const Navbar: React.FC = () => {
   const searchParams = useSearchParams();
 
   const handleSearch = () => {
-
     const newParams = new URLSearchParams(searchParams);
 
     if (searchQuery.trim()) {
@@ -43,14 +42,18 @@ const Navbar: React.FC = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    fetch("/api/navbarItems")
-      .then((res) => res.json())
-      .then((data) => {
-        setNavbar(data.data);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch categories:", err);
-      });
+    // fetch("/api/navbarItems")
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setNavbar(data.data);
+    //   })
+    //   .catch((err) => {
+    //     console.error("Failed to fetch categories:", err);
+    //   });
+    setNavbar([
+      { id: 1, label: "Home", link: "/" },
+      { id: 2, label: "All Products", link: "/products" },
+    ]);
   }, []);
 
   return (
@@ -58,13 +61,15 @@ const Navbar: React.FC = () => {
       {/* Top Navbar */}
       <div className="flex items-center justify-between px-4 py-4 md:px-10 flex-wrap gap-y-2">
         <div className="flex items-center gap-4">
-          {/* Hamburger Icon (Mobile) */}
-          <button
-            className="md:hidden text-gray-700"
-            onClick={() => setBottomCollapse((prev) => !prev)}
-          >
-            <FaBars size={20} />
-          </button>
+          <div>
+            {/* Hamburger Icon (Mobile) */}
+            <button
+              className="md:hidden text-gray-700"
+              onClick={() => setBottomCollapse((prev) => !prev)}
+            >
+              <FaBars size={20} />
+            </button>
+          </div>
 
           {/* Logo */}
           <Link href="/" className="text-2xl font-bold text-blue-600">
@@ -105,7 +110,7 @@ const Navbar: React.FC = () => {
         <div className="flex flex-wrap gap-4 md:gap-6 text-sm md:text-base whitespace-nowrap overflow-x-auto scrollbar-hide">
           {navbar.map((cat) => (
             <Link
-              href="/products"
+              href={cat.link}
               key={cat.id}
               className="cursor-pointer hover:text-blue-600 text-gray-700 font-medium"
             >

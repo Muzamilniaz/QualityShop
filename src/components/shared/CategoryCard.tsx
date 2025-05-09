@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import React, { useState } from "react";
 
 interface CategoryProps {
@@ -8,22 +8,18 @@ interface CategoryProps {
 }
 
 const CategoryCard: React.FC<CategoryProps> = ({ id, img }) => {
-  const router = useRouter();
-
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const actualImage = `https:${img.trim()}`;
+  const actualImage = `${img.trim()}`;
   const placeholderImage =
     "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png";
-  const handleClick = () => {
-    router.push("/products?brand=" + id);
-  };
+
   return (
-    <div
+    <Link
+      href={`/products?brand=${id}`}
       className="bg-white rounded-2xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center p-4 text-center cursor-pointer"
-      onClick={handleClick}
     >
-      <div className="w-24 h-24 bg-gray-100 border border-gray-300 rounded-full flex items-center justify-center mb-4 overflow-hidden shadow-sm">
+      <div className="w-24 h-24 bg-gray-200 border border-gray-300 rounded-full flex items-center justify-center mb-4 overflow-hidden shadow-sm">
         <Image
           src={imageError || !imageLoaded ? placeholderImage : actualImage}
           alt="Brand Icon"
@@ -40,7 +36,7 @@ const CategoryCard: React.FC<CategoryProps> = ({ id, img }) => {
       </div>
       {/* Optional Title */}
       {/* <h3 className="text-base font-medium text-gray-800">{title}</h3> */}
-    </div>
+    </Link>
   );
 };
 
