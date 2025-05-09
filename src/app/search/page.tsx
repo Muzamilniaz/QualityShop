@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/shared/ProductCard";
+import Loader from "@/components/shared/Loader";
 
 interface Product {
   id: number;
@@ -52,7 +53,7 @@ const Page: React.FC = () => {
 
       {(() => {
         if (isLoading) {
-          return <p>Loading...</p>;
+          return <Loader/>;
         }
         if (searchResults.length > 0) {
           return (

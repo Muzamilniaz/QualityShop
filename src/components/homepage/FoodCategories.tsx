@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import CategoryCard from "../shared/CategoryCard";
+import Loader from "../shared/Loader";
 
 interface Category {
   id: number;
@@ -38,7 +39,9 @@ const FoodCategories: React.FC = () => {
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-5 ">
         {brands.length === 0 ? (
-          <p className="text-center col-span-full">Loading brands...</p>
+          <div className="text-center col-span-full">
+            <Loader />
+          </div>
         ) : (
           brands.map((item) => (
             <CategoryCard key={item.id} img={item.image} id={item.id} />
